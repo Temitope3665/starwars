@@ -11,12 +11,13 @@
 
     select {
         width: 70%;
-        padding: 10px 0;
+        padding: 10px 10px;
         outline: none;
         border: 1px solid $primary-color;
         border-radius: 5px;
         margin: 10px auto;
-        color: $grey-dark;
+        color: $color-black;
+        font-weight: 300;
     }
 
 }
