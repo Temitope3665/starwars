@@ -1,5 +1,4 @@
 import apiInstance from './apiIntance';
 
-const getMovies = async () => apiInstance({ url: 'films' })
-
-export default getMovies;
+export const getMovies = async () => apiInstance({ url: 'films' })
+export const getSingleMovie = async (url) => apiInstance({ url: `${url}` })
