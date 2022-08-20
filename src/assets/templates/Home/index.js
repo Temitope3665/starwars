@@ -19,14 +19,22 @@ const HomeComponent = (props) => {
   const [filterMovieChar, setFilterMovieChar] = useState([]);
   const [characterLoading, setCharacterLoading] = useState(true);
   const { data, error, isLoading, isError } = QueryGetMovies();
-  const { data: singleMovieData, isLoading: singleMovieLoading } = QueryGetSingleMovie(url);
+  const { data: singleMovieData, isLoading: singleMovieLoading } =
+    QueryGetSingleMovie(url);
 
   const listOfMovies = data?.data?.results;
   const singleMovie = singleMovieData?.data;
   const movieCharacters = singleMovie?.characters;
-  const movieCharactersHeight = movieCharacters_.map((res) => Number(res.height));
-  const filterMovieCharHeight = filterMovieChar.map((res) => Number(res.height));
-  const totalHeights = filterMovieChar.length === 0 ? findSum(movieCharactersHeight) : findSum(filterMovieCharHeight);
+  const movieCharactersHeight = movieCharacters_.map((res) =>
+    Number(res.height)
+  );
+  const filterMovieCharHeight = filterMovieChar.map((res) =>
+    Number(res.height)
+  );
+  const totalHeights =
+    filterMovieChar.length === 0
+      ? findSum(movieCharactersHeight)
+      : findSum(filterMovieCharHeight);
 
   const cData = async () => {
     await Promise.all(
@@ -43,7 +51,7 @@ const HomeComponent = (props) => {
               },
             ]);
           })
-          .catch((err) => toaster.danger('Error occurred' || err));
+          .catch((err) => toaster.danger("Error occurred" || err));
       })
     );
     setCharacterLoading(false);
@@ -53,22 +61,27 @@ const HomeComponent = (props) => {
     cData();
   }, [movieCharacters]);
 
-
   const handleFilter = (e) => {
     const text = e.target.value;
-    if (text === 'Male') {      
-      const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
-      setFilterMovieChar(filteredCharacter)
-    } else if (text === 'Female') {
-      const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
-      setFilterMovieChar(filteredCharacter)
-    } else if (text === 'N/a') {
-      const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
-      setFilterMovieChar(filteredCharacter)
+    if (text === "Male") {
+      const filteredCharacter = movieCharacters_.filter(
+        (res) => capitalizeFirstLetter(res?.gender) === text
+      );
+      setFilterMovieChar(filteredCharacter);
+    } else if (text === "Female") {
+      const filteredCharacter = movieCharacters_.filter(
+        (res) => capitalizeFirstLetter(res?.gender) === text
+      );
+      setFilterMovieChar(filteredCharacter);
+    } else if (text === "N/a") {
+      const filteredCharacter = movieCharacters_.filter(
+        (res) => capitalizeFirstLetter(res?.gender) === text
+      );
+      setFilterMovieChar(filteredCharacter);
     } else {
-      setFilterMovieChar(movieCharacters_)
+      setFilterMovieChar(movieCharacters_);
     }
-  }
+  };
 
   if (isError) {
     toaster.danger(error);
@@ -103,37 +116,49 @@ const HomeComponent = (props) => {
         </>
       )}
 
-      {characterLoading || singleMovieLoading ? (
-        loading
-      ) : (
-        <div className="table-wrapper">
-          <label>Filter by:</label>
-          <select
-            name="movies"
-            id="movies"
-            className="filter-by"
-            onChange={(e) => handleFilter(e)}
-          >
-            <option value="" disabled selected>
-              Filter by:
-            </option>
-            {filterData.map((res) => (
-              <option value={res} key={res}>
-                {res}
-              </option>
-            ))}
-          </select>
+      {isLoading ? null : (
+        <>
+          {characterLoading || singleMovieLoading ? (
+            loading
+          ) : (
+            <div className="table-wrapper">
+              <label>Filter by:</label>
+              <select
+                name="movies"
+                id="movies"
+                className="filter-by"
+                onChange={(e) => handleFilter(e)}
+              >
+                <option value="" disabled selected>
+                  Filter by:
+                </option>
+                {filterData.map((res) => (
+                  <option value={res} key={res}>
+                    {res}
+                  </option>
+                ))}
+              </select>
 
-          <TableComp
-            caption={singleMovie?.opening_crawl}
-            data={filterMovieChar.length === 0 ? movieCharacters_ : filterMovieChar}
-            columns={TableColumn}
-            totalCharacter={filterMovieChar.length === 0 ? movieCharacters_.length : filterMovieChar.length}
-            sumOfHeight={totalHeights}
-            heightToCm={totalHeights/30.48}
-            heightToInches={totalHeights/2.54}
-          />
-        </div>
+              <TableComp
+                caption={singleMovie?.opening_crawl}
+                data={
+                  filterMovieChar.length === 0
+                    ? movieCharacters_
+                    : filterMovieChar
+                }
+                columns={TableColumn}
+                totalCharacter={
+                  filterMovieChar.length === 0
+                    ? movieCharacters_.length
+                    : filterMovieChar.length
+                }
+                sumOfHeight={totalHeights}
+                heightToCm={totalHeights / 30.48}
+                heightToInches={totalHeights / 2.54}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
