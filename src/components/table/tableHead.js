@@ -29,8 +29,6 @@ const TableHead = ({ columns, handleSorting }) => {
               key={accessor}
               onDoubleClick={sortable ? () => handleSortingChange(accessor) : null}
             >
-              {/* {label}
-              {cl} */}
               <div className="label">
                 {label.toUpperCase()}
                 <div className="label-icon">{cl}</div>
