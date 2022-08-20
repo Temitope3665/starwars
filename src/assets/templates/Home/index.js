@@ -1,4 +1,5 @@
-import { Spinner, toaster } from "evergreen-ui";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { toaster } from "evergreen-ui";
 import { useEffect, useState } from "react";
 import Header from "../../../layouts/header";
 import {
@@ -18,7 +19,7 @@ const HomeComponent = (props) => {
   const [filterMovieChar, setFilterMovieChar] = useState([]);
   const [characterLoading, setCharacterLoading] = useState(true);
   const { data, error, isLoading, isError } = QueryGetMovies();
-  const { data: singleMovieData } = QueryGetSingleMovie(url);
+  const { data: singleMovieData, isLoading: singleMovieLoading } = QueryGetSingleMovie(url);
 
   const listOfMovies = data?.data?.results;
   const singleMovie = singleMovieData?.data;
@@ -57,15 +58,12 @@ const HomeComponent = (props) => {
     const text = e.target.value;
     if (text === 'Male') {      
       const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
-      console.log(filteredCharacter);
       setFilterMovieChar(filteredCharacter)
     } else if (text === 'Female') {
       const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
-      console.log(filteredCharacter);
       setFilterMovieChar(filteredCharacter)
     } else if (text === 'N/a') {
       const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
-      console.log(filteredCharacter);
       setFilterMovieChar(filteredCharacter)
     } else {
       setFilterMovieChar(movieCharacters_)
@@ -105,7 +103,7 @@ const HomeComponent = (props) => {
         </>
       )}
 
-      {characterLoading ? (
+      {characterLoading || singleMovieLoading ? (
         loading
       ) : (
         <div className="table-wrapper">

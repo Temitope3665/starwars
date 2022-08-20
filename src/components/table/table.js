@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-distracting-elements */
 import { useSortableTable } from "../../hooks/useSortTable";
 import TableBody from "./tableBody";
 import TableHead from "./tableHead";
@@ -7,8 +8,10 @@ const TableComp = ({ caption, data, columns, totalCharacter, sumOfHeight, height
 
   return (
     <>
+    <div className="caption-wrapper">
+      <marquee className="caption">{caption}</marquee>
+    </div>
       <table className="table">
-        <caption>{caption}</caption>
         <TableHead columns={columns} handleSorting={handleSorting} />
         <TableBody
           columns={columns}

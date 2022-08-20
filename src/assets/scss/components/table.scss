@@ -4,13 +4,24 @@
     text-align: center;
     padding: 20px;
     justify-content: center;
-    
-    caption {
+}
+
+.caption-wrapper {
+    .caption {
         color: $grey-color;
-        margin: 10px auto;
-        line-height: 25px;
-        font-size: 14px;
-        width: 90%;
+        line-height: 55px;
+        width: 100%;
         text-align: center;
+        font-size: 30px;
+        text-transform: uppercase;
+        background-image: linear-gradient(#444 1px, transparent 1px);
+        background-size: 100% 10px;
+        text-align: center;
+        transition: .2s;
+        margin-top: 50px;
+        transition: margin 1s;
+    }
+    .caption:hover{
+        transition: margin 35s linear;
     }
 }
