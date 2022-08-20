@@ -1,4 +1,4 @@
-import HomeComponent from "../assets/templates/Home";
+import HomeComponent from "../templates/Home";
 
 const Home = () => <HomeComponent />;
 

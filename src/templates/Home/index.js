@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { toaster } from "evergreen-ui";
 import { useEffect, useState } from "react";
-import Header from "../../../layouts/header";
+import Header from "../../layouts/header";
 import {
   QueryGetMovies,
   QueryGetSingleMovie,
-} from "../../../services/useQuery";
-import { loading } from "../../svg/animation";
-import { TableColumn } from "../../../utils/variable/tableColumns";
+} from "../../services/useQuery";
+import { loading } from "../../assets/svg/animation";
+import { TableColumn } from "../../utils/variable/tableColumns";
 import axios from "axios";
-import { filterData } from "../../../utils/variable/filterData";
-import TableComp from "../../../components/table/table";
-import { capitalizeFirstLetter, findSum } from "../../../utils/helpers";
-import Footer from "../../../layouts/footer";
+import { filterData } from "../../utils/variable/filterData";
+import TableComp from "../../components/table/table";
+import { capitalizeFirstLetter, findSum } from "../../utils/helpers";
+import Footer from "../../layouts/footer";
 
 const HomeComponent = (props) => {
   const [url, setURL] = useState();
