@@ -1,33 +1,80 @@
-import { toaster } from "evergreen-ui";
-import { useState } from "react";
-import Table from "../../../components/table/table";
+import { Spinner, toaster } from "evergreen-ui";
+import { useEffect, useState } from "react";
 import Header from "../../../layouts/header";
 import {
   QueryGetMovies,
   QueryGetSingleMovie,
 } from "../../../services/useQuery";
 import { loading } from "../../svg/animation";
-import tableData from '../../../utils/variable/tableData.json';
 import { TableColumn } from "../../../utils/variable/tableColumns";
+import axios from "axios";
+import { filterData } from "../../../utils/variable/filterData";
+import TableComp from "../../../components/table/table";
+import { capitalizeFirstLetter, findSum } from "../../../utils/helpers";
 
-const HomeComponent = () => {
-  const [url, setURL] = useState([]);
-
-  const { data, error, isFetching, isLoading, isError } = QueryGetMovies();
-
-  const { data: singleMovie } = QueryGetSingleMovie(url);
-
-  console.log(singleMovie?.data?.characters);
+const HomeComponent = (props) => {
+  const [url, setURL] = useState();
+  const [movieCharacters_, setMovieCharacters] = useState([]);
+  const [filterMovieChar, setFilterMovieChar] = useState([]);
+  const [characterLoading, setCharacterLoading] = useState(true);
+  const { data, error, isLoading, isError } = QueryGetMovies();
+  const { data: singleMovieData } = QueryGetSingleMovie(url);
 
   const listOfMovies = data?.data?.results;
+  const singleMovie = singleMovieData?.data;
+  const movieCharacters = singleMovie?.characters;
+  const movieCharactersHeight = movieCharacters_.map((res) => Number(res.height));
+  const filterMovieCharHeight = filterMovieChar.map((res) => Number(res.height));
+  const totalHeights = filterMovieChar.length === 0 ? findSum(movieCharactersHeight) : findSum(filterMovieCharHeight);
 
-  // console.log(listOfMovies);
+  const cData = async () => {
+    await Promise.all(
+      movieCharacters?.map(async (res) => {
+        await axios
+          .get(res)
+          .then((res) => {
+            setMovieCharacters((prevItems) => [
+              ...prevItems,
+              {
+                name: res.data.name,
+                gender: res.data.gender,
+                height: res.data.height,
+              },
+            ]);
+          })
+          .catch((err) => toaster.danger('Error occurred' || err));
+      })
+    );
+    setCharacterLoading(false);
+  };
+
+  useEffect(() => {
+    cData();
+  }, [movieCharacters]);
+
+
+  const handleFilter = (e) => {
+    const text = e.target.value;
+    if (text === 'Male') {      
+      const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
+      console.log(filteredCharacter);
+      setFilterMovieChar(filteredCharacter)
+    } else if (text === 'Female') {
+      const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
+      console.log(filteredCharacter);
+      setFilterMovieChar(filteredCharacter)
+    } else if (text === 'N/a') {
+      const filteredCharacter = movieCharacters_.filter((res) => capitalizeFirstLetter(res?.gender) === text);
+      console.log(filteredCharacter);
+      setFilterMovieChar(filteredCharacter)
+    } else {
+      setFilterMovieChar(movieCharacters_)
+    }
+  }
 
   if (isError) {
     toaster.danger(error);
   }
-
-  console.log(url);
 
   return (
     <div className="wrapper">
@@ -40,13 +87,17 @@ const HomeComponent = () => {
           <select
             name="movies"
             id="movies"
-            onChange={(e) => setURL(e.target.value)}
+            onChange={(e) => {
+              setURL(e.target.value);
+              setMovieCharacters([]);
+            }}
+            className="select-movies"
           >
             <option value="" disabled selected>
               Select your movie
             </option>
             {listOfMovies?.map((res) => (
-              <option value={[res?.url]} key={res?.episode_id}>
+              <option value={res?.url} key={res?.episode_id}>
                 {res?.title}
               </option>
             ))}
@@ -54,12 +105,38 @@ const HomeComponent = () => {
         </>
       )}
 
-      <h1>Sortable table with React</h1>
-      <Table
-        caption="Developers currently enrolled in this course, column headers are sortable."
-        data={tableData}
-        columns={TableColumn}
-      />
+      {characterLoading ? (
+        loading
+      ) : (
+        <div className="table-wrapper">
+          <label>Filter by:</label>
+          <select
+            name="movies"
+            id="movies"
+            className="filter-by"
+            onChange={(e) => handleFilter(e)}
+          >
+            <option value="" disabled selected>
+              Filter by:
+            </option>
+            {filterData.map((res) => (
+              <option value={res} key={res}>
+                {res}
+              </option>
+            ))}
+          </select>
+
+          <TableComp
+            caption={singleMovie?.opening_crawl}
+            data={filterMovieChar.length === 0 ? movieCharacters_ : filterMovieChar}
+            columns={TableColumn}
+            totalCharacter={filterMovieChar.length === 0 ? movieCharacters_.length : filterMovieChar.length}
+            sumOfHeight={totalHeights}
+            heightToCm={totalHeights/30.48}
+            heightToInches={totalHeights/2.54}
+          />
+        </div>
+      )}
     </div>
   );
 };

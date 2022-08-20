@@ -1,4 +1,6 @@
-const TableBody = ({ tableData, columns }) => {
+import { capitalizeFirstLetter } from "../../utils/helpers";
+
+const TableBody = ({ tableData, columns, totalCharacter, sumOfHeight, heightToCm, heightToInches }) => {
   return (
     <tbody>
       {tableData.map((data) => {
@@ -6,11 +8,16 @@ const TableBody = ({ tableData, columns }) => {
           <tr key={data.id}>
             {columns.map(({ accessor }) => {
               const tData = data[accessor] ? data[accessor] : "——";
-              return <td key={accessor}>{tData}</td>;
+              return <td key={accessor} className="table-data">{capitalizeFirstLetter(tData)}</td>;
             })}
           </tr>
         );
       })}
+      <tr>
+        <td className="table-bottom">{totalCharacter} Characters</td>
+        <td></td>
+        <td className="table-bottom">{`${sumOfHeight} cm (${Math.round(heightToCm)}ft/${Math.round(heightToInches)}in)`}</td>
+      </tr>
     </tbody>
   );
 };

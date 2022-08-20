@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useSortableTable = (data) => {
+  // console.log(data, 'data');
   const [tableData, setTableData] = useState(data);
+
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
+
+  // console.log(tableData, 'tabledata');
 
   const handleSorting = (sortField, sortOrder) => {
     if (sortField) {

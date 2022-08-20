@@ -1,0 +1,1 @@
+export const filterData = ['All', 'Male', 'Female', 'N/a'];

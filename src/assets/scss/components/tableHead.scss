@@ -1,4 +1,16 @@
 th {
     color: white;
     cursor: pointer;
+
+    .label {
+        display: flex;
+        justify-content: center;
+        letter-spacing: 3px;
+        font-size: 14px;
+        text-align: center;
+    }
+    
+    .label-icon {
+        margin-left: 15px;
+    }
 }

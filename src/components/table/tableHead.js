@@ -27,10 +27,14 @@ const TableHead = ({ columns, handleSorting }) => {
           return (
             <th
               key={accessor}
-              onClick={sortable ? () => handleSortingChange(accessor) : null}
+              onDoubleClick={sortable ? () => handleSortingChange(accessor) : null}
             >
-              {label}
-              {cl}
+              {/* {label}
+              {cl} */}
+              <div className="label">
+                {label.toUpperCase()}
+                <div className="label-icon">{cl}</div>
+              </div>
             </th>
           );
         })}
