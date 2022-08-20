@@ -16,7 +16,7 @@ const TableBody = ({ tableData, columns, totalCharacter, sumOfHeight, heightToCm
       <tr>
         <td className="table-bottom">{totalCharacter} Characters</td>
         <td></td>
-        <td className="table-bottom">{`${sumOfHeight} cm (${Math.round(heightToCm)}ft/${Math.round(heightToInches)}in)`}</td>
+        <td className="table-bottom">{`${sumOfHeight} cm (${Math.round(heightToCm)} ft/${(heightToInches.toFixed(2))} in)`}</td>
       </tr>
     </tbody>
   );
