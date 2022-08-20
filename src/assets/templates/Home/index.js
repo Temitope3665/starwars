@@ -12,6 +12,7 @@ import axios from "axios";
 import { filterData } from "../../../utils/variable/filterData";
 import TableComp from "../../../components/table/table";
 import { capitalizeFirstLetter, findSum } from "../../../utils/helpers";
+import Footer from "../../../layouts/footer";
 
 const HomeComponent = (props) => {
   const [url, setURL] = useState();
@@ -160,6 +161,8 @@ const HomeComponent = (props) => {
           )}
         </>
       )}
+
+      <Footer />
     </div>
   );
 };
